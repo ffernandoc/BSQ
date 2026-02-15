@@ -1,1 +1,81 @@
 Aqui vou colocar todas as instruções para o projeto.
+
+De forma simples, o que se pede é o seguinte:
+
+Formato do mapa: 
+o ficheiro tem uma primeira linha com o número de linhas do mapa e três caracteres diferentes 
+(o carácter para as células vazias, para os obstáculos e para o quadrado final). 
+As linhas seguintes são compostas apenas pelo carácter de espaço livre e pelo de obstáculo.
+
+Encontrar o maior quadrado: 
+o programa deve percorrer o mapa e descobrir onde caberia o maior quadrado possível usando apenas células vazias. 
+Se houver mais de uma solução do mesmo tamanho, deve escolher a que estiver mais no topo e, em caso de empate, mais à esquerda.
+
+Algoritmo eficiente: 
+para evitar testar todas as combinações, 
+utiliza-se um método de programação dinâmica que, para cada posição, 
+calcula o tamanho do maior quadrado que termina nessa posição a partir do mínimo dos valores da posição acima, 
+da esquerda e da diagonal superior esquerda. Assim, encontra-se o quadrado máximo de forma rápida.
+
+Imprimir o resultado: 
+depois de determinar a posição e o tamanho do quadrado, 
+o programa imprime o mapa substituindo as células do quadrado encontrado pelo terceiro carácter (o de preenchimento) 
+e escreve as outras linhas como estavam.
+
+Em resumo, o projeto pede para ler um mapa com caracteres específicos, usar um algoritmo para encontrar o maior
+quadrado de espaços livres e imprima o mapa indicando esse quadrado.
+
+Estudar: 
+
+Modelar e interpretar o formato do mapa: entender que a primeira linha do ficheiro contém o número de linhas e os caracteres “empty”,
+“obstacle” e “full”, e que as linhas seguintes contêm apenas os caracteres “empty” e “obstacle”.
+Saber validar que todas as linhas têm o mesmo comprimento e apenas contêm esses caracteres.
+
+Structs, recurção, programação dinâmica e algoritmos, manipulação de ficheiros (open, read etc...)
+gestão de memória dinâmica, processamento de strings e números, tratamento de empates, impressão formatada
+noção de complexidade (Vais usar apenas neste projeto, talvez no common core, parece dificil pra caralho
+mas não é tanto)
+
+Precisamos de uma função para redimensionar o buffer: 
+Vai ser usada internamente quando precisamos armazenar uma linha de comprimento desconhecido (Não esquecer de dar free e retornar o ponteiro).
+
+Uma struct para guardar os dados todos os dados importantes do mapa.
+
+Uma função para adicionar caracteres ao buffer
+
+Uma função que  lê bytes do ficheiro fd um a um até encontrar \n ou até read() devolver 0 (fim de ficheiro). 
+Cada carácter é acrescentado ao buffer usando append_char(). Se a primeira chamada a read() já devolve 0 e len continua 0, 
+significa que não havia dados a ler, e a função devolve 0. Caso contrário, devolve 1 para indicar que existe uma linha válida.
+
+Uma função para converter buffer em string.
+
+Função para interpretar a primeira linha do ficheiro:
+
+Verifica se a linha tem pelo menos 4 caracteres (deve haver pelo menos um dígito e três caracteres especiais).
+Extrai os três últimos caracteres como empty, obstacle e full. Garante que são distintos.
+Os caracteres anteriores devem ser apenas dígitos, converte essa parte num inteiro (num). 
+Se houver caracteres não numéricos ou se o número for menor ou igual a zero, devolve 0 (erro).
+Atribui o valor de num a map->lines e devolve 1 para indicar sucesso.
+
+Função para verificação e leitura das linhas do mapa.
+
+Uma função para dar free às linhas.
+
+Uma função para ler todas as linhas do mapa.
+
+Uma função para ler o cabeçalho e as linhas.
+
+Programação dinâmica para o maior quadrado
+
+Função para processar uma linha do mapa.
+
+função para encontrar o maior quadrado.
+
+função para fazer o preenchimento do quadrado
+
+função para imprimir o mapa.
+
+funções auxiliares para mensagens de error.
+
+Função para processar um ficheiro.
+
