@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   bsq.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frcruz <frcruz@student.42porto.com>        +#+  +:+       +#+        */
+/*   By: hfonseca <hfonseca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 01:12:36 by hfonseca          #+#    #+#             */
-/*   Updated: 2026/02/16 03:40:35 by frcruz           ###   ########.fr       */
+/*   Created: 2026/02/16 17:22:09 by hfonseca          #+#    #+#             */
+/*   Updated: 2026/02/16 17:22:09 by hfonseca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BSQ_H
 # define BSQ_H
 
-# include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 /*
  * Estrutura que representa um mapa e o maior quadrado encontrado. Os campos
@@ -36,36 +38,25 @@ typedef struct s_map
 	int		best_col;
 }			t_map;
 
-/* =========================
- * Fluxo geral / erros
- * ========================= */
-int			process_file(const char *path, t_map *map);
-void		print_map_error(void);
+/* Leitura de linhas (dinâmica) */
+int		read_line_dyn(int fd, char **out);
 
-/* =========================
- * Memória
- * ========================= */
-void		free_rows(char **rows, int count);
+/* Parsing do header */
+int		parse_header_line(char *line, int len, t_map *map);
 
-/* =========================
- * Leitura / parsing / validação
- * ========================= */
-int			read_line_dyn(int fd, char **out);
-int			parse_header_line(char *line, int len, t_map *map);
-int			check_row_chars(char *row, int len, t_map *map);
+/* Leitura completa do mapa (header + linhas) */
+int		read_map(int fd, t_map *map);
 
-/* =========================
- * Leitura do mapa (alto nível)
- * ========================= */
-int			read_map_from_fd(int fd, t_map *map);
+/* Resolução */
+void	find_square(t_map *map);
 
-/* =========================
- * Helpers de leitura do mapa
- * (divisão para cumprir Norm)
- * ========================= */
-void		init_map(t_map *map);
-int			read_and_parse_header(int fd, t_map *map);
-int			alloc_data(t_map *map);
-int			read_all_rows(int fd, t_map *map);
+/* Output / memória */
+void	fill_square(t_map *map);
+void	print_map(t_map *map);
+void	free_map(t_map *map);
+
+/* Utils */
+void	ft_putstr(char *s);
+void	ft_putchar(char c);
 
 #endif
