@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_map.c                                         :+:      :+:    :+:   */
+/*   read_lines.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfonseca <hfonseca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: frcruz <frcruz@student.42porto.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 01:06:43 by hfonseca          #+#    #+#             */
-/*   Updated: 2026/02/16 01:06:43 by hfonseca         ###   ########.fr       */
+/*   Updated: 2026/02/16 05:22:02 by frcruz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsq.h"
+#include <limits.h>
 #include <stdlib.h>
 
 /*
@@ -18,31 +19,31 @@
  * necessário. Actualiza len e cap. Retorna 1 em caso de sucesso ou 0 em erro
  * de alocação. Esta função é estática pois só é utilizada neste ficheiro.
  */
-static int append_char(char **buf, int *len, int *cap, char c)
+static int	append_char(char **buf, int *len, int *cap, char c)
 {
-    int     newcap;
-    char    *tmp;
-    int     i;
+	int		newcap;
+	char	*tmp;
+	int		i;
 
-    if (*len >= *cap)
-    {
-        newcap = (*cap) * 2;
-        tmp = (char *)malloc(newcap);
-        if (!tmp)
-            return (0);
-        i = 0;
-        while (i < *cap)
-        {
-            tmp[i] = (*buf)[i];
-            i++;
-        }
-        free(*buf);
-        *buf = tmp;
-        *cap = newcap;
-    }
-    (*buf)[*len] = c;
-    (*len)++;
-    return (1);
+	if (*len >= *cap)
+	{
+		newcap = (*cap) * 2;
+		tmp = (char *)malloc(newcap);
+		if (!tmp)
+			return (0);
+		i = 0;
+		while (i < *cap)
+		{
+			tmp[i] = (*buf)[i];
+			i++;
+		}
+		free(*buf);
+		*buf = tmp;
+		*cap = newcap;
+	}
+	(*buf)[*len] = c;
+	(*len)++;
+	return (1);
 }
 
 /*
@@ -51,19 +52,28 @@ static int append_char(char **buf, int *len, int *cap, char c)
  * pelo menos um carácter foi lido ou 0 em caso de erro ou fim de ficheiro
  * imediato.
  */
-static int read_line_into_buffer(int fd, char **buf, int *len, int *cap)
+static int	read_line_into_buffer(int fd, char **buf, int *len, int *cap)
 {
-    char    c;
-    int     r;
+	char	c;
+	int		r;
 
-    while ((r = read(fd, &c, 1)) > 0 && c != '\n')
-    {
-        if (!append_char(buf, len, cap, c))
-            return (0);
-    }
-    if (r <= 0 && *len == 0)
-        return (0);
-    return (1);
+	r = read(fd, &c, 1);
+	while (r > 0 && c != '\n')
+	{
+		if (!append_char(buf, len, cap, c))
+			return (0);
+		r = read(fd, &c, 1);
+	}
+	if (r < 0) /* erro de leitura */
+		return (0);
+	if (r == 0 && *len == 0) /* EOF imediato => sem linha */
+		return (0);
+	return (1); /* \n ou EOF após ler algo => linha válida */
+}
+
+static int	is_printable(char c)
+{
+	return (c >= 32 && c <= 126);
 }
 
 /*
@@ -71,40 +81,40 @@ static int read_line_into_buffer(int fd, char **buf, int *len, int *cap)
  * comprimento da linha sem '\n' ou -1 em caso de erro/EOF sem dados. O
  * ponteiro de saída recebe a string terminada por '\0'.
  */
-static int read_line_dyn(int fd, char **out)
+int	read_line_dyn(int fd, char **out)
 {
-    int     cap;
-    int     len;
-    char    *buf;
-    char    *line;
-    int     i;
+	int		cap;
+	int		len;
+	char	*buf;
+	char	*line;
+	int		i;
 
-    cap = 16;
-    len = 0;
-    buf = (char *)malloc(cap);
-    if (!buf)
-        return (-1);
-    if (!read_line_into_buffer(fd, &buf, &len, &cap))
-    {
-        free(buf);
-        return (-1);
-    }
-    line = (char *)malloc(len + 1);
-    if (!line)
-    {
-        free(buf);
-        return (-1);
-    }
-    i = 0;
-    while (i < len)
-    {
-        line[i] = buf[i];
-        i++;
-    }
-    line[len] = '\0';
-    free(buf);
-    *out = line;
-    return (len);
+	cap = 16;
+	len = 0;
+	buf = (char *)malloc(cap);
+	if (!buf)
+		return (-1);
+	if (!read_line_into_buffer(fd, &buf, &len, &cap))
+	{
+		free(buf);
+		return (-1);
+	}
+	line = (char *)malloc(len + 1);
+	if (!line)
+	{
+		free(buf);
+		return (-1);
+	}
+	i = 0;
+	while (i < len)
+	{
+		line[i] = buf[i];
+		i++;
+	}
+	line[len] = '\0';
+	free(buf);
+	*out = line;
+	return (len);
 }
 
 /*
@@ -113,32 +123,39 @@ static int read_line_dyn(int fd, char **out)
  * anterior deve conter apenas dígitos que correspondem ao número de linhas.
  * Retorna 1 se a linha é válida ou 0 caso contrário.
  */
-static int parse_header_line(char *line, int len, t_map *map)
+int	parse_header_line(char *line, int len, t_map *map)
 {
-    int i;
-    int num;
-    int num_len;
+	int	i;
+	int	num;
+	int	num_len;
+	int	digit;
 
-    if (len < 4)
-        return (0);
-    map->empty = line[len - 3];
-    map->obstacle = line[len - 2];
-    map->full = line[len - 1];
-    if (map->empty == map->obstacle || map->empty == map->full
-        || map->obstacle == map->full)
-        return (0);
-    num_len = len - 3;
-    i = 0;
-    num = 0;
-    while (i < num_len)
-    {
-        if (line[i] < '0' || line[i] > '9')
-            return (0);
-        num = num * 10 + (line[i] - '0');
-        i++;
-    }
-    if (num <= 0)
-        return (0);
-    map->lines = num;
-    return (1);
+	if (len < 4)
+		return (0);
+	map->empty = line[len - 3];
+	map->obstacle = line[len - 2];
+	map->full = line[len - 1];
+	if (map->empty == map->obstacle || map->empty == map->full
+		|| map->obstacle == map->full)
+		return (0);
+	if (!is_printable(map->empty) || !is_printable(map->obstacle)
+		|| !is_printable(map->full)) /* Eu validei printable porque o enunciado pede. */
+		return (0);
+	num_len = len - 3;
+	i = 0;
+	num = 0;
+	while (i < num_len)
+	{
+		if (line[i] < '0' || line[i] > '9')
+			return (0);
+		digit = line[i] - '0';
+		if (num > (INT_MAX - digit) / 10) /* Eu bloqueei overflow para evitar UB. */
+			return (0);
+		num = num * 10 + digit;
+		i++;
+	}
+	if (num <= 0)
+		return (0);
+	map->lines = num;
+	return (1);
 }

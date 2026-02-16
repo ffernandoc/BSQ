@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bsq.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfonseca <hfonseca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: frcruz <frcruz@student.42porto.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 01:12:36 by hfonseca          #+#    #+#             */
-/*   Updated: 2026/02/16 01:12:36 by hfonseca         ###   ########.fr       */
+/*   Updated: 2026/02/16 03:40:35 by frcruz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,47 @@
  */
 typedef struct s_map
 {
-    char    empty;
-    char    obstacle;
-    char    full;
-    int     lines;
-    int     cols;
-    char    **data;
-    int     max_side;
-    int     best_row;
-    int     best_col;
-}   t_map;
+	char	empty;
+	char	obstacle;
+	char	full;
+	int		lines;
+	int		cols;
+	char	**data;
+	int		max_side;
+	int		best_row;
+	int		best_col;
+}			t_map;
 
-/* Funções públicas implementadas nos ficheiros correspondentes */
+/* =========================
+ * Fluxo geral / erros
+ * ========================= */
+int			process_file(const char *path, t_map *map);
+void		print_map_error(void);
+
+/* =========================
+ * Memória
+ * ========================= */
+void		free_rows(char **rows, int count);
+
+/* =========================
+ * Leitura / parsing / validação
+ * ========================= */
+int			read_line_dyn(int fd, char **out);
+int			parse_header_line(char *line, int len, t_map *map);
+int			check_row_chars(char *row, int len, t_map *map);
+
+/* =========================
+ * Leitura do mapa (alto nível)
+ * ========================= */
+int			read_map_from_fd(int fd, t_map *map);
+
+/* =========================
+ * Helpers de leitura do mapa
+ * (divisão para cumprir Norm)
+ * ========================= */
+void		init_map(t_map *map);
+int			read_and_parse_header(int fd, t_map *map);
+int			alloc_data(t_map *map);
+int			read_all_rows(int fd, t_map *map);
 
 #endif
