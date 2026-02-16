@@ -1,20 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hfonseca <hfonseca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 00:50:15 by hfonseca          #+#    #+#             */
-/*   Updated: 2026/02/16 00:50:15 by hfonseca         ###   ########.fr       */
+/*   Created: 2026/02/16 01:17:52 by hfonseca          #+#    #+#             */
+/*   Updated: 2026/02/16 01:17:52 by hfonseca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsq.h"
-#include <fcntl.h>
 #include <stdlib.h>
 
-int main(int argc, char **argv)
-{
-    
-}
+int check_row_chars(char *row, int len, t_map *map);
