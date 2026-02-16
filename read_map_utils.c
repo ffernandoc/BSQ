@@ -15,7 +15,7 @@
 
 /*
  * init_map:
- * Decisão: iniciar estado previsível para evitar lixo em caso de erro.
+ * I niciar estado previsível para evitar lixo em caso de erro.
  */
 void	init_map(t_map *map)
 {
@@ -51,7 +51,7 @@ int	read_and_parse_header(int fd, t_map *map)
 
 /*
  * alloc_data:
- * Decisão: alocar map->data e inicializar tudo a NULL para free seguro.
+ * Alocar map->data e inicializar tudo a NULL para free seguro.
  */
 int	alloc_data(t_map *map)
 {
@@ -71,7 +71,7 @@ int	alloc_data(t_map *map)
 
 /*
  * read_all_rows:
- * Decisão: ler todas as linhas, validar e guardar.
+ * Ler todas as linhas, validar e guardar.
  * Se falhar em qualquer linha, libera tudo e sinaliza erro.
  */
 int	read_all_rows(int fd, t_map *map)
