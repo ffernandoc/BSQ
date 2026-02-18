@@ -12,6 +12,9 @@
 
 #include "bsq.h"
 
+/*
+** Devolve o menor valor entre tres inteiros.
+*/
 static int	min3(int a, int b, int c)
 {
 	int	min;
@@ -24,6 +27,9 @@ static int	min3(int a, int b, int c)
 	return (min);
 }
 
+/*
+** Guarda melhor quadrado: mais acima, depois mais a esquerda.
+*/
 static void	update_best(t_map *map, int val, int row, int col)
 {
 	if (val > map->max_side)
@@ -48,6 +54,9 @@ static void	update_best(t_map *map, int val, int row, int col)
 	}
 }
 
+/*
+** Calcula DP de uma linha e atualiza o melhor quadrado.
+*/
 static void	process_row(t_map *map, int *prev, int *curr, int row)
 {
 	int	col;
@@ -66,6 +75,9 @@ static void	process_row(t_map *map, int *prev, int *curr, int row)
 	}
 }
 
+/*
+** Aloca dois buffers DP para o algoritmo por linhas.
+*/
 static int	init_dp_buffers(t_map *map, int **prev, int **curr)
 {
 	*prev = (int *)malloc(sizeof(int) * map->cols);
@@ -79,6 +91,9 @@ static int	init_dp_buffers(t_map *map, int **prev, int **curr)
 	return (1);
 }
 
+/*
+** Encontra o maior quadrado vazio com programacao dinamica.
+*/
 int	find_square(t_map *map)
 {
 	int	*prev;

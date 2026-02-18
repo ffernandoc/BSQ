@@ -12,11 +12,17 @@
 
 #include "bsq.h"
 
+/*
+** Escreve um caractere no output padrao.
+*/
 void	ft_putchar(char c)
 {
 	write(1, &c, 1);
 }
 
+/*
+** Escreve uma string com '\\0' no output padrao.
+*/
 void	ft_putstr(char *s)
 {
 	int	i;

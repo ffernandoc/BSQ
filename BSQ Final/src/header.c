@@ -12,16 +12,25 @@
 
 #include "bsq.h"
 
+/*
+** Verifica se c esta no intervalo ASCII imprimivel.
+*/
 static int	is_printable(char c)
 {
 	return (c >= 32 && c <= 126);
 }
 
+/*
+** Devolve o maior valor representavel por int.
+*/
 static int	get_int_max(void)
 {
 	return ((int)(~0u >> 1));
 }
 
+/*
+** Faz parse do numero de linhas no prefixo do header.
+*/
 static int	parse_lines(char *line, int len)
 {
 	int	i;
@@ -47,6 +56,9 @@ static int	parse_lines(char *line, int len)
 	return (n);
 }
 
+/*
+** Faz parse e valida a primeira linha do mapa.
+*/
 int	parse_header_line(char *line, int len, t_map *map)
 {
 	map->lines = parse_lines(line, len);

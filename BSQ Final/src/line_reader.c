@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   line_reader.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfonseca <hfonseca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: frcruz <frcruz@student.42porto.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:51:58 by hfonseca          #+#    #+#             */
-/*   Updated: 2026/02/16 14:51:58 by hfonseca         ###   ########.fr       */
+/*   Updated: 2026/02/18 19:42:26 by frcruz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsq.h"
 
+/*
+** Copia len bytes de src para dst.
+*/
 static void	copy_buf(char *dst, char *src, int len)
 {
 	int	i;
@@ -24,6 +27,9 @@ static void	copy_buf(char *dst, char *src, int len)
 	}
 }
 
+/*
+** Aumenta o buffer dinamico ate suportar len bytes.
+*/
 static int	grow_buffer(char **buf, int *cap, int len)
 {
 	char	*newbuf;
@@ -46,6 +52,9 @@ static int	grow_buffer(char **buf, int *cap, int len)
 	return (1);
 }
 
+/*
+** Le uma linha logica e exige newline no fim.
+*/
 static int	read_loop(int fd, char **buf, int *len, int *cap)
 {
 	char	c;
@@ -64,9 +73,14 @@ static int	read_loop(int fd, char **buf, int *len, int *cap)
 		return (-1);
 	if (r == 0 && *len == 0)
 		return (0);
+	if (r == 0)
+		return (-2);
 	return (1);
 }
 
+/*
+** Devolve linha sem '\\n'; 0 em EOF; negativo em erro.
+*/
 int	read_line_dyn(int fd, char **out)
 {
 	char	*buf;

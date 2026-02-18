@@ -12,6 +12,9 @@
 
 #include "bsq.h"
 
+/*
+** Garante que cada celula e empty ou obstacle.
+*/
 static int	check_row_chars(char *row, int len, t_map *map)
 {
 	int	i;
@@ -26,6 +29,9 @@ static int	check_row_chars(char *row, int len, t_map *map)
 	return (1);
 }
 
+/*
+** Liberta linhas ja lidas quando o parse falha.
+*/
 static int	cleanup_read(t_map *map, char *row, int count)
 {
 	if (row)
@@ -40,6 +46,9 @@ static int	cleanup_read(t_map *map, char *row, int count)
 	return (0);
 }
 
+/*
+** Valida tamanho da linha e caracteres permitidos.
+*/
 static int	validate_row(t_map *map, char *line, int len, int i)
 {
 	if (line[len - 1] == '\r')
@@ -53,6 +62,9 @@ static int	validate_row(t_map *map, char *line, int len, int i)
 	return (1);
 }
 
+/*
+** Le todas as linhas e rejeita bytes extra no fim.
+*/
 static int	read_map_rows(int fd, t_map *map)
 {
 	int		i;
@@ -78,6 +90,9 @@ static int	read_map_rows(int fd, t_map *map)
 	return (cleanup_read(map, NULL, map->lines));
 }
 
+/*
+** Le e valida um mapa completo de fd para t_map.
+*/
 int	read_map(int fd, t_map *map)
 {
 	char	*line;

@@ -12,6 +12,9 @@
 
 #include "bsq.h"
 
+/*
+** Substitui celulas do melhor quadrado pelo simbolo full.
+*/
 void	fill_square(t_map *map)
 {
 	int	r;
@@ -32,6 +35,9 @@ void	fill_square(t_map *map)
 	}
 }
 
+/*
+** Imprime o mapa resolvido no output padrao.
+*/
 void	print_map(t_map *map)
 {
 	int	i;
@@ -45,6 +51,9 @@ void	print_map(t_map *map)
 	}
 }
 
+/*
+** Liberta todas as linhas e limpa o ponteiro data.
+*/
 void	free_map(t_map *map)
 {
 	int	i;

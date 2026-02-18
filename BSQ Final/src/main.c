@@ -12,6 +12,9 @@
 
 #include "bsq.h"
 
+/*
+** Le, resolve e imprime um mapa a partir de um fd aberto.
+*/
 static void	solve_fd(int fd)
 {
 	t_map	map;
@@ -32,6 +35,9 @@ static void	solve_fd(int fd)
 	free_map(&map);
 }
 
+/*
+** Abre um ficheiro e delega o processamento em solve_fd.
+*/
 static void	solve_file(char *file)
 {
 	int	fd;
@@ -46,6 +52,9 @@ static void	solve_file(char *file)
 	close(fd);
 }
 
+/*
+** Ponto de entrada: le do stdin ou dos ficheiros recebidos.
+*/
 int	main(int argc, char **argv)
 {
 	int	i;
