@@ -1,69 +1,64 @@
-# BSQ v1.09
+# BSQ Versao Final
 
 Projeto final BSQ da 42, desenvolvido por Hugo Fonseca e Fernando Cruz.
 
-O programa encontra o maior quadrado possível sem obstáculos em um mapa e marca esse quadrado com o caractere `full`.
+O programa encontra o maior quadrado possivel sem obstaculos em um mapa e marca esse quadrado com o caractere `full`.
 
-## Estrutura do projeto
+## Estrutura atual
 
-- `src/`: código-fonte em C.
-- `include/`: cabeçalhos do projeto.
-- `maps/`: mapas para execução manual (válidos e inválidos intencionais).
-- `Makefile`: build do binário `bsq`.
-- `CHANGELOG.md`: histórico resumido das mudanças relevantes.
+- `BSQ Final/`: versao com estrutura separada (`src/` e `include/`).
+- `BSQ Final 2/`: mesma logica, com todos os arquivos C/H em uma unica pasta.
+- `maps/`: mapas de teste (validos e invalidos).
+- `CHANGELOG.md`: historico resumido.
+- `README_EN.md`: documentacao em ingles.
 
 ## Requisitos
 
-- `cc` (ou compilador compatível com `-Wall -Wextra -Werror`)
+- `cc` (compilador C com suporte a `-Wall -Wextra -Werror`)
 - `make`
 
-## Compilação
+## Como compilar
+
+Versao 1:
 
 ```bash
-make
+make -C "BSQ Final"
 ```
 
-Comandos úteis:
+Versao 2:
 
 ```bash
-make re      # recompila do zero
-make clean   # remove objetos (obj/)
-make fclean  # remove objetos e binário
+make -C "BSQ Final 2"
 ```
 
-## Execução
+## Como executar
 
-Executar com mapa sugerido:
+Versao 1:
 
 ```bash
-./bsq maps/HugoFernando.map
+./"BSQ Final"/bsq maps/HugoFernando.map
 ```
 
-Executar lendo de `stdin`:
+Versao 2:
 
 ```bash
-cat maps/42.map | ./bsq
+./"BSQ Final 2"/bsq maps/HugoFernando.map
 ```
 
-Executar com múltiplos arquivos:
+Leitura por `stdin`:
 
 ```bash
-./bsq maps/HugoFernando.map maps/42.map
+cat maps/42.map | ./"BSQ Final"/bsq
+cat maps/42.map | ./"BSQ Final 2"/bsq
 ```
 
-Executar todos os mapas da pasta `maps/`:
+## Formato do mapa
 
-```bash
-for f in maps/*.map; do ./bsq "$f"; echo; done
-```
+1. Header: `<linhas><empty><obstacle><full>`
+2. As linhas da grade devem ter largura fixa.
+3. A grade deve conter apenas os caracteres `empty` e `obstacle`.
 
-## Formato esperado do mapa
-
-1. Primeira linha (header): `<linhas><empty><obstacle><full>`
-2. Linhas seguintes: grade com largura fixa.
-3. Caracteres válidos na grade: apenas `empty` e `obstacle`.
-
-Exemplo simples:
+Exemplo:
 
 ```txt
 6.ox
@@ -75,14 +70,16 @@ Exemplo simples:
 ......
 ```
 
-## Validação manual
+## Limpeza
 
-Use os mapas da pasta `maps/` para validar cenários válidos e inválidos:
+Versao 1:
 
 ```bash
-for f in maps/*.map; do
-	echo "[MAPA] $f"
-	./bsq "$f"
-	echo
-done
+make -C "BSQ Final" fclean
+```
+
+Versao 2:
+
+```bash
+make -C "BSQ Final 2" fclean
 ```
